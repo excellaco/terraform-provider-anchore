@@ -1,11 +1,22 @@
-BINARY=terraform-provider-anchore
+REGISTRY=registry.terraform.io
+NAMESPACE=excellaco
+NAME=anchore
+VERSION=$(shell git describe --tags --abbrev=0 | sed 's/^v//')
+BINARY=terraform-provider-$(NAME)_$(VERSION)
+INSTALL_PATH=${HOME}/.terraform.d/plugins/$(REGISTRY)/$(NAMESPACE)/$(NAME)/$(VERSION)
 TEST?=$$(go list ./...)
 GOFMT_FILES?=$$(find . -name '*.go')
 
-default: build
+default: install
 
 build: fmtcheck
-	go install
+	GOOS=darwin GOARCH=amd64 go build -o $(BINARY)_darwin_amd64
+	GOOS=linux GOARCH=amd64 go build -o $(BINARY)_linux_amd64
+
+install: build
+	mkdir -p $(INSTALL_PATH)
+	mkdir -p $(INSTALL_PATH)/darwin_amd64 && mv $(BINARY)_darwin_amd64 $(INSTALL_PATH)/darwin_amd64/$(BINARY)
+	mkdir -p $(INSTALL_PATH)/linux_amd64 && mv $(BINARY)_linux_amd64 $(INSTALL_PATH)/linux_amd64/$(BINARY)
 
 test:
 	go test $(TEST) || exit 1

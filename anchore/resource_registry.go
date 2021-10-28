@@ -2,6 +2,7 @@ package anchore
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/excellaco/anchore-client-go/client"
 	"github.com/excellaco/anchore-client-go/types"
@@ -76,6 +77,11 @@ func resourceAnchoreRegistryRead(ctx context.Context, d *schema.ResourceData, me
 
 	registry, err := anchoreClient.RegistryRead(&url)
 	if err != nil {
+		anchoreClientError := err.(*client.ClientError)
+		if anchoreClientError.StatusCode == http.StatusNotFound {
+			d.SetId("")
+			return nil
+		}
 		return diag.FromErr(err)
 	}
 

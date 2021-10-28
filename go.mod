@@ -3,7 +3,7 @@ module github.com/excellaco/terraform-provider-anchore
 go 1.17
 
 require (
-	github.com/excellaco/anchore-client-go v0.1.2
+	github.com/excellaco/anchore-client-go v0.1.3
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.8.0
 )
 

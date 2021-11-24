@@ -16,7 +16,7 @@ terraform {
   required_providers {
     anchore = {
       source  = "excellaco/anchore"
-      version = "0.1.2"
+      version = "0.1.3"
     }
   }
 }

@@ -23,3 +23,10 @@ Install the provider
 $ cd $GOPATH/src/github.com/excellaco/terraform-provider-anchore
 $ make install
 ```
+
+Publishing
+```sh
+$ export GPG_FINGERPRINT=<the signing key fingerprint>
+$ export GPG_TTY=$(tty)
+$ goreleaser release --rm-dist
+```
